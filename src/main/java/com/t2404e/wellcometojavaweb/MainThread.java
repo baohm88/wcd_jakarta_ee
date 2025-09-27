@@ -11,9 +11,8 @@ public class MainThread {
         Account acc = new Account("Tran Van B", "test123", 1);
 
         try {
-            Account saved = repo.save(acc);
-            System.out.println("Inserted account: " + saved);
-            System.out.println("New id = " + saved.getId());
+            repo.add(acc);
+            System.out.println("Saved account: " + acc);
         } catch (RuntimeException ex) {
             ex.printStackTrace();
             System.out.println("Save failed: " + ex.getMessage());

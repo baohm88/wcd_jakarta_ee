@@ -1,7 +1,7 @@
 package com.t2404e.wellcometojavaweb.entity;
 
 public class Account {
-    private Long id;
+    private long id;
     private String username;
     private String passwordHash;
     private int status;
@@ -10,7 +10,7 @@ public class Account {
     public Account() {
     }
 
-    public Account(Long id, String username, int status) {
+    public Account(long id, String username, int status) {
         this.id = id;
         this.username = username;
         this.status = status;

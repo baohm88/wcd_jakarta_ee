@@ -7,10 +7,7 @@ import java.sql.SQLException;
 
 public final class MysqlConnector {
     // JDBC URL khuyến nghị (Unicode, timezone, tắt SSL cục bộ)
-    private static final String URL =
-            "jdbc:mysql://localhost:3306/hello_t2404e"
-                    + "?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC"
-                    + "&useSSL=false&allowPublicKeyRetrieval=true";
+    private static final String URL = "jdbc:mysql://localhost:3306/hello_t2404e";
     private static final String USER = "root";
     private static final String PASSWORD = "";
 

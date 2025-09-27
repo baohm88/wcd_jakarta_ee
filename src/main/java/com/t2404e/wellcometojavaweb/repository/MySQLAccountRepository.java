@@ -5,81 +5,109 @@ import com.t2404e.wellcometojavaweb.helper.MysqlConnector;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.util.List;
 import java.sql.ResultSet;
-
+import java.util.ArrayList;
+import java.util.List;
 
 public class MySQLAccountRepository implements AccountRepository {
+
     @Override
-    public Account save(Account account) {
-        final String sql = "INSERT INTO account (username, passwordHash, status) VALUES (?, ?, ?)";
-        
-
-        try (Connection con = MysqlConnector.getConnection();
-             PreparedStatement ps =
-                     con.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS)) {
-
+    public void add(Account account) {
+        try {
+            Connection con = MysqlConnector.getConnection();
+            String sql = "INSERT INTO account(username, passwordHash, status) VALUES (?, ?, ?)";
+            PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, account.getUsername());
             ps.setString(2, account.getPasswordHash());
             ps.setInt(3, account.getStatus());
-
-            int rows = ps.executeUpdate();
-            if (rows == 0) {
-                throw new RuntimeException("Insert account failed: no row affected");
-            }
-
-            try (ResultSet rs = ps.getGeneratedKeys()) {
-                if (rs.next()) {
-                    account.setId(rs.getLong(1));
-                }
-            }
-            return account;
-
-        } catch (java.sql.SQLIntegrityConstraintViolationException e) {
-            throw new RuntimeException("Username already exists: " + account.getUsername(), e);
+            ps.executeUpdate();
+            System.out.println("Thêm account thành công!");
         } catch (Exception e) {
-            throw new RuntimeException("Insert account failed", e);
+            e.printStackTrace();
         }
-    }
-
-
-    @Override
-    public Account update(Long id, Account account) {
-        return null;
-    }
-
-    @Override
-    public boolean delete(Long id, Account account) {
-        return false;
-    }
-
-    @Override
-    public Account findById(long id) {
-        return null;
     }
 
     @Override
     public List<Account> findAll() {
-        String sql = "SELECT * FROM account ORDER BY id";
-
-        List<Account> results = new java.util.ArrayList<>();
-
-        try (
-             Connection con = MysqlConnector.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-
+        List<Account> list = new ArrayList<>();
+        try {
+            Connection con = MysqlConnector.getConnection();
+            String sql = "SELECT * FROM account";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Account acc = new Account();
-                acc.setId(rs.getLong("id"));
-                acc.setUsername(rs.getString("username"));
-                acc.setStatus(rs.getInt("status"));
-                results.add(acc);
+                Account acc = new Account(
+                        rs.getLong("id"),
+                        rs.getString("username"),
+                        rs.getString("passwordHash"),
+                        rs.getInt("status")
+                );
+                list.add(acc);
             }
-            return results;
-
         } catch (Exception e) {
-            throw new RuntimeException("Query findAll() failed", e);
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    @Override
+    public Account findById(long id) {
+        try {
+            Connection con = MysqlConnector.getConnection();
+            String sql = "SELECT * FROM account WHERE id = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setLong(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new Account(
+                        rs.getLong("id"),
+                        rs.getString("username"),
+                        rs.getString("passwordHash"),
+                        rs.getInt("status")
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public void update(long id, Account account) {
+        try {
+            Connection con = MysqlConnector.getConnection();
+            String sql = "UPDATE account SET username=?, passwordHash=?, status=? WHERE id=?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, account.getUsername());
+            ps.setString(2, account.getPasswordHash());
+            ps.setInt(3, account.getStatus());
+            ps.setLong(4, id);
+            int rows = ps.executeUpdate();
+            if (rows > 0) {
+                System.out.println("Cập nhật thành công!");
+            } else {
+                System.out.println("Không tìm thấy account để cập nhật.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void delete(long id) {
+        try {
+            Connection con = MysqlConnector.getConnection();
+            String sql = "DELETE FROM account WHERE id = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setLong(1, id);
+            int rows = ps.executeUpdate();
+            if (rows > 0) {
+                System.out.println("Xóa thành công!");
+            } else {
+                System.out.println("Không tìm thấy account để xóa.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
