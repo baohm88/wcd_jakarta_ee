@@ -23,11 +23,11 @@ public class ConsoleApp {
             int c = readInt("Chọn: ");
 
             switch (c) {
-                case 1 -> add();
-                case 2 -> listAll();
-                case 3 -> find();
-                case 4 -> delete();
-                case 5 -> update();
+                case 1 -> addAccount();
+                case 2 -> listAllAccounts();
+                case 3 -> findAccById();
+                case 4 -> deleteAccById();
+                case 5 -> updateAccById();
                 case 0 -> {
                     System.out.println("Tạm biệt!");
                     return;
@@ -37,7 +37,7 @@ public class ConsoleApp {
         }
     }
 
-    private static void add() {
+    private static void addAccount() {
         System.out.print("Username: ");
         String u = sc.nextLine();
         System.out.print("Password: ");
@@ -46,7 +46,7 @@ public class ConsoleApp {
         repo.add(new Account(u, p, s));
     }
 
-    private static void listAll() {
+    private static void listAllAccounts() {
         List<Account> list = repo.findAll();
         if (list.isEmpty()) {
             System.out.println("Không có account nào.");
@@ -55,7 +55,7 @@ public class ConsoleApp {
         }
     }
 
-    private static void find() {
+    private static void findAccById() {
         System.out.print("Nhập ID: ");
         long id = Long.parseLong(sc.nextLine());
         Account acc = repo.findById(id);
@@ -63,13 +63,13 @@ public class ConsoleApp {
         else System.out.println("Không tìm thấy!");
     }
 
-    private static void delete() {
+    private static void deleteAccById() {
         System.out.print("Nhập ID cần xóa: ");
         long id = Long.parseLong(sc.nextLine());
         repo.delete(id);
     }
 
-    private static void update() {
+    private static void updateAccById() {
         System.out.print("Nhập ID cần update: ");
         long id = Long.parseLong(sc.nextLine());
         Account acc = repo.findById(id);
