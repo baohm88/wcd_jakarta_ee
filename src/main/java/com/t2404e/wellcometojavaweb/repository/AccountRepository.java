@@ -4,9 +4,9 @@ import com.t2404e.wellcometojavaweb.entity.Account;
 import java.util.List;
 
 public interface AccountRepository {
-    void add(Account account);
+    Account save(Account account);
+    Account update(int id, Account account);
+    boolean deleteById(int id);
+    Account findById(int id);
     List<Account> findAll();
-    Account findById(long id);
-    void update(long id, Account account);
-    void delete(long id);
 }

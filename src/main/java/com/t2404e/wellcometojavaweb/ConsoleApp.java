@@ -40,10 +40,14 @@ public class ConsoleApp {
     private static void addAccount() {
         System.out.print("Username: ");
         String u = sc.nextLine();
+        System.out.print("Email: ");
+        String e = sc.nextLine();
         System.out.print("Password: ");
         String p = sc.nextLine();
         int s = readInt("Status: ");
-        repo.add(new Account(u, p, s));
+
+        Account acc = new Account(u, e, p, s);
+        repo.save(acc);
     }
 
     private static void listAllAccounts() {
@@ -56,22 +60,24 @@ public class ConsoleApp {
     }
 
     private static void findAccById() {
-        System.out.print("Nhập ID: ");
-        long id = Long.parseLong(sc.nextLine());
+        int id = readInt("Nhập ID: ");
         Account acc = repo.findById(id);
         if (acc != null) System.out.println(acc);
         else System.out.println("Không tìm thấy!");
     }
 
     private static void deleteAccById() {
-        System.out.print("Nhập ID cần xóa: ");
-        long id = Long.parseLong(sc.nextLine());
-        repo.delete(id);
+        int id = readInt("Nhập ID cần xóa: ");
+        boolean deleted = repo.deleteById(id);
+        if (deleted) {
+            System.out.println("Xóa thành công.");
+        } else {
+            System.out.println("Không tìm thấy account để xóa.");
+        }
     }
 
     private static void updateAccById() {
-        System.out.print("Nhập ID cần update: ");
-        long id = Long.parseLong(sc.nextLine());
+        int id = readInt("Nhập ID cần update: ");
         Account acc = repo.findById(id);
         if (acc == null) {
             System.out.println("Không tìm thấy account.");
@@ -84,6 +90,10 @@ public class ConsoleApp {
         String u = sc.nextLine();
         if (u.isEmpty()) u = acc.getUsername();
 
+        System.out.print("Email mới (Enter để giữ nguyên): ");
+        String e = sc.nextLine();
+        if (e.isEmpty()) e = acc.getEmail();
+
         System.out.print("Password mới (Enter để giữ nguyên): ");
         String p = sc.nextLine();
         if (p.isEmpty()) p = acc.getPasswordHash();
@@ -92,11 +102,11 @@ public class ConsoleApp {
         String sInput = sc.nextLine();
         int s = sInput.isEmpty() ? acc.getStatus() : Integer.parseInt(sInput);
 
-        Account updated = new Account(u, p, s);
+        Account updated = new Account(u, e, p, s);
 
-        // Hỏi xác nhận
         System.out.println("\nXác nhận cập nhật:");
         System.out.println("Username: " + u);
+        System.out.println("Email: " + e);
         System.out.println("Password: " + p);
         System.out.println("Status: " + s);
         System.out.print("Bạn có chắc muốn cập nhật? (Y/N): ");
@@ -104,6 +114,7 @@ public class ConsoleApp {
 
         if (confirm.equalsIgnoreCase("Y")) {
             repo.update(id, updated);
+            System.out.println("Đã cập nhật account.");
         } else {
             System.out.println("Đã hủy cập nhật.");
         }

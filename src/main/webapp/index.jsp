@@ -8,6 +8,10 @@
 <h1><%= "Hello World!" %>
 </h1>
 <br/>
-<a href="register">Register</a>
+<a href="/user/register">Register</a>
+<br>
+<a href="/admin/product/create">Create Product</a>
+<br>
+<a href="/admin/product/list">Products List</a>
 </body>
 </html>

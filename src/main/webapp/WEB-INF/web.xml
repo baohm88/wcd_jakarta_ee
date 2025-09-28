@@ -9,6 +9,42 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>Register</servlet-name>
-        <url-pattern>/register</url-pattern>
+        <url-pattern>/user/register</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CreateProduct</servlet-name>
+        <servlet-class>com.t2404e.wellcometojavaweb.controller.CreateProduct</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CreateProduct</servlet-name>
+        <url-pattern>/admin/product/create</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>EditProduct</servlet-name>
+        <servlet-class>com.t2404e.wellcometojavaweb.controller.EditProduct</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EditProduct</servlet-name>
+        <url-pattern>/admin/product/edit</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DeleteProduct</servlet-name>
+        <servlet-class>com.t2404e.wellcometojavaweb.controller.DeleteProduct</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteProduct</servlet-name>
+        <url-pattern>/admin/product/delete</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>ProductList</servlet-name>
+        <servlet-class>com.t2404e.wellcometojavaweb.controller.ProductList</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ProductList</servlet-name>
+        <url-pattern>/admin/product/list</url-pattern>
     </servlet-mapping>
 </web-app>
